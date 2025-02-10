@@ -17,6 +17,7 @@ function index() {
   const [restaurants, setrestaurants] = useState([]);
   const [selectedRestaurants, setselectedRestaurants] = useState({});
   const [imageurl, setimageurl] = useState("");
+  const [loading, setloading] = useState(false);
 
   const placesSuggestions = async () => {
     try {
@@ -89,12 +90,14 @@ function index() {
 };
 
 const ReachThere = () => {
+    setloading(true);
     const geo = navigator.geolocation;
     const userCordinates = (position) => {
       console.log(position.coords.latitude, position.coords.longitude);
       const lati = position.coords.latitude;
       const longi = position.coords.longitude;
       dispatch(setFromLocation({ latitude: lati, longitude: longi }));
+      setloading(false);
     };
     geo.getCurrentPosition(userCordinates);
   };
@@ -107,6 +110,12 @@ const ReachThere = () => {
      setselectedRestaurants({})
   },[restaurantSearch])
 
+  if(loading){
+    return <div className="fixed top-0 left-0 h-[100vh] w-[100vw] flex flex-col items-center justify-center text-white font-thin bg-black">
+    <div className="text-3xl">Loading........</div>
+    </div>
+  }
+
   return (
     <div className="flex flex-col gap-5 w-full items-center justify-start">
       <div className="text-3xl mt-5 font-thin text-white">
@@ -116,8 +125,8 @@ const ReachThere = () => {
         <IoFastFood className="text-white text-2xl" />
         <input
           type="text"
-          placeholder="Search Here..."
-          className="p-2 px-4 bg-green-400 rounded-lg placeholder:text-white font-light"
+          placeholder="Enter the city..."
+          className="p-2 px-4 bg-green-600 rounded-lg placeholder:text-white font-light"
           value={restaurantSearch}
           onChange={(e) => {
             setRestaurantSearch(e.target.value);

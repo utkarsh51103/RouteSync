@@ -16,6 +16,7 @@ function index() {
   const [hotels, sethotels] = useState([]);
   const [selectedhotel, setselectedhotel] = useState({});
   const [imageurl, setimageurl] = useState("");
+  const [loading, setloading] = useState(false);
 
   const placesSuggestions = async () => {
     try {
@@ -88,12 +89,14 @@ function index() {
 };
 
 const ReachThere = () => {
+    setloading(true);
     const geo = navigator.geolocation;
     const userCordinates = (position) => {
       console.log(position.coords.latitude, position.coords.longitude);
       const lati = position.coords.latitude;
       const longi = position.coords.longitude;
       dispatch(setFromLocation({ latitude: lati, longitude: longi }));
+      setloading(false);
     };
     geo.getCurrentPosition(userCordinates);
   };
@@ -105,6 +108,12 @@ const ReachThere = () => {
      }
      setselectedhotel({})
   },[hotelSearch])
+
+  if(loading){
+    return <div className=" fixed top-0 left-0 h-[100vh] w-[100vw] flex flex-col items-center justify-center text-white font-thin bg-black">
+    <div className="text-3xl">Loading........</div>
+    </div>
+  }
 
   return (
     <div className="flex flex-col gap-5 w-full items-center justify-start">
