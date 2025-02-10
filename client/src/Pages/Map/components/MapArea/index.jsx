@@ -96,7 +96,7 @@ function MapArea() {
               map.fitBounds(bounds, { padding: [50, 50] });
         map.fitBounds(bounds,{padding:[50,50]});
         try {
-            const res = await axios.post(`http://localhost:5004/route/get-danger`,{routeCords:routeCoordinates})
+            const res = await axios.post(`https://routesync-server.onrender.com/route/get-danger`,{routeCords:routeCoordinates})
             
            setdangerousplaces(res.data.data);
       } catch (error) {
