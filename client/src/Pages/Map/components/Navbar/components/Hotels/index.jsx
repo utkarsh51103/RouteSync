@@ -108,7 +108,7 @@ function index() {
   },[hotelSearch])
 
   return (
-    <div className="flex flex-col gap-5 items-center justify-start">
+    <div className="flex flex-col gap-5 w-full items-center justify-start">
       <div className="text-3xl mt-5 font-thin text-white">
         Find <span className="text-red-400">Hotels</span>
       </div>
@@ -175,10 +175,10 @@ function index() {
       )}
       {Object.keys(selectedhotel).length > 0 && (
         <div className="flex rounded-lg w-full flex-col gap-5 items-center justify-center">
-          <div className="flex flex-col gap-2 items-center justify-center w-[90%] bg-white rounded-lg p-3">
-            <div className="flex w-full gap-5 items-center font-semibold text-red-400 justify-between">
-            <div><img src={imageurl.length>0 ? imageurl : "https://www.google.com/url?sa=i&url=https%3A%2F%2Ffreedesignfile.com%2F613263-hotel-cartoon-vector%2F&psig=AOvVaw3Hot55G1UWnEvGhqt4P-uC&ust=1739247681048000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNC5wNSguIsDFQAAAAAdAAAAABAE"} className="h-[100px] w-[150px]"/></div>
-            <div>{selectedhotel.name}</div>  
+          <div className="flex flex-col gap-5 items-center justify-center w-[90%] bg-white rounded-lg p-3">
+            <div className="flex w-full gap-5 items-center font-semibold text-red-400 justify-center">
+            <div className="flex-1"><img src={imageurl.length>0 ? imageurl : "https://www.google.com/url?sa=i&url=https%3A%2F%2Ffreedesignfile.com%2F613263-hotel-cartoon-vector%2F&psig=AOvVaw3Hot55G1UWnEvGhqt4P-uC&ust=1739247681048000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNC5wNSguIsDFQAAAAAdAAAAABAE"} className="h-[100px] w-[150px]"/></div>
+            <div className="flex flex-1 items-center justify-center">{selectedhotel.name}</div>  
             </div>
             <div className="flex items-center gap-3 text-black justify-start">
               <span className="font-bold">
