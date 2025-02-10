@@ -36,15 +36,35 @@ function index() {
     const longitude = place.center[0];
     const latitude = place.center[1];
 
+    const bbox = [
+      longitude - 0.3,
+      latitude - 0.3,
+      longitude + 0.3,
+      latitude + 0.3,
+    ].join(",");
+
     try {
+      const url4 = `https://api.foursquare.com/v3/places/search?
+ll=${latitude},${longitude}
+&query=hotel
+&limit=10`;
+
       const url2 = `https://api.mapbox.com/geocoding/v5/mapbox.places/hotel.json?proximity=${longitude},${latitude}&access_token=pk.eyJ1IjoidXRrYXJzaDUxMSIsImEiOiJjbTYyM3d2b2gwcDhlMmtzZncwbjlsMHkwIn0.rf0wivdr5CRxcnrSpPmN6w`;
+
+      const url3 = `https://api.mapbox.com/geocoding/v5/mapbox.places/hotel.json?bbox=${bbox}&access_token=pk.eyJ1IjoidXRrYXJzaDUxMSIsImEiOiJjbTYyM3d2b2gwcDhlMmtzZncwbjlsMHkwIn0.rf0wivdr5CRxcnrSpPmN6w`;
 
       const url1 = `https://api.mapbox.com/geocoding/v5/mapbox.places/hotel.json?types=poi&proximity=${longitude},${latitude}&access_token=pk.eyJ1IjoidXRrYXJzaDUxMSIsImEiOiJjbTYyM3d2b2gwcDhlMmtzZncwbjlsMHkwIn0.rf0wivdr5CRxcnrSpPmN6w`;
 
-      const response = await fetch(url2);
+      const response = await fetch(url4, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          Authorization: "fsq3sZVAgQrTKyRNsG3/BI4fVByOrbF1eWdmmv6fEijCjH4=",
+        },
+      });
       const data = await response.json();
-      sethotels(data.features);
-      console.log(data.features);
+      sethotels(data.results);
+      console.log(data.results);
     } catch (error) {
       console.log(error.message);
     }
@@ -53,8 +73,8 @@ function index() {
   const searchHotel = (hotel) => {
     dispatch(
       setToLocation({
-        latitude: hotel.center[1],
-        longitude: hotel.center[0],
+        latitude: hotel.geocodes.main.latitude,
+        longitude: hotel.geocodes.main.longitude,
       })
     );
     dispatch(setFromLocation({ latitude: 0, longitude: 0 }));
@@ -111,7 +131,7 @@ function index() {
               key={index}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.2, ease: 'linear'}}
+              transition={{ duration: 0.2, ease: "linear" }}
               whileHover={{ scale: 1.1 }}
               className="px-3 py-2 w-[90%] cursor-pointer bg-white rounded-md text-black font-thin"
               onClick={() => searchHotel(hotel)}
@@ -119,12 +139,14 @@ function index() {
               <div className="font-semibold">
                 {index + 1}
                 {". "}
-                {hotel.text}
+                {hotel.name}
               </div>
               <div className="flex gap-1 items-center">
                 <div className="font-medium">Address </div>
                 <div className="text-sm border-l-[1px] border-black ml-3 pl-3">
-                  {hotel.place_name}
+                  <div>{hotel.location.address}</div>
+                  <div>{hotel.location.locality}{" "}{hotel.location.region}</div>
+                  <div>{hotel.location.postalcode}</div>
                 </div>
               </div>
             </motion.div>
@@ -132,22 +154,27 @@ function index() {
         </div>
       )}
       {Object.keys(selectedhotel).length > 0 && (
-        <div className="flex rounded-lg flex-col gap-5 items-center justify-center">
+        <div className="flex rounded-lg w-full flex-col gap-5 items-center justify-center">
           <div className="flex flex-col gap-2 items-center justify-center w-[90%] bg-white rounded-lg p-3">
             <div className="flex items-center font-semibold text-red-400 justify-center">
-              {selectedhotel.text}
+              {selectedhotel.name}
             </div>
             <div className="flex items-center gap-3 text-black justify-start">
-              <span className="font-bold border-r-[1px] border-black pr-3">
+              <span className="font-bold">
                 Address{" "}
               </span>
-              {selectedhotel.place_name}
+              <div className="text-sm border-l-[1px] border-black ml-3 pl-3">
+                  <div>{selectedhotel.location.address}</div>
+                  <div>{selectedhotel.location.locality}{" "}{selectedhotel.location.region}</div>
+                  <div>{selectedhotel.location.postalcode}</div>
+                </div> 
             </div>
           </div>
           <div className="flex items-center justify-center gap-2">
             <MdDirectionsRun className="text-red-400 text-xl" />
-            <motion.button className="text-lg text-red-400 bg-white hover:bg-gray-200 transition-all duration-300 py-2 px-3 rounded-lg"
-            whileHover={{ scale: 1.1 }}
+            <motion.button
+              className=" text-red-500 text-sm bg-white hover:bg-gray-200 transition-all duration-300 py-2 px-3 rounded-lg"
+              whileHover={{ scale: 1.1 }}
             >
               Reach There
             </motion.button>
