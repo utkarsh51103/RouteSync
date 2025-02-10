@@ -55,7 +55,6 @@ function index() {
       const response = await fetch(url);
       const data = await response.json();
       const suggestion = data.features;
-      console.log(suggestion);
       if (e == "to") {
         setTosuggestions(suggestion);
       } else if (e == "from") {

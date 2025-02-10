@@ -22,7 +22,6 @@ function MapArea() {
   const routenumber = useSelector((state)=>state.routenumber.number);
 
   useEffect(() => {
-    console.log(tolatitude, tolongitude)
     const map = L.map(mapRef.current).setView(
       [fromLatitude, fromLongitude],
       zoom

@@ -6,7 +6,7 @@ import { MdOutlineHotel } from "react-icons/md";
 import { IoFastFood } from "react-icons/io5";
 import { IoMdClose } from "react-icons/io";
 import Hotel from './components/Hotels'
-
+import Restaurant from './components/Restaurants'
 
 function index() {
 
@@ -57,6 +57,13 @@ const LocationDialog = () =>{
     {
       hoteldialog && <div className="absolute h-[500px] md:h-[630px] w-[500px] top-10 sm:left-2 md:left-36 flex justify-center z-20 bg-black/90 rounded-2xl transition-all duration-300">
       <Hotel/>
+      <IoMdClose className="absolute text-white top-3 right-3 text-3xl cursor-pointer" onClick={()=>closedialog()}/>
+      </div>
+    }
+
+    {
+      fooddialog && <div className="absolute h-[500px] md:h-[630px] w-[500px] top-10 sm:left-2 md:left-36 flex justify-center z-20 bg-black/90 rounded-2xl transition-all duration-300">
+      <Restaurant/>
       <IoMdClose className="absolute text-white top-3 right-3 text-3xl cursor-pointer" onClick={()=>closedialog()}/>
       </div>
     }
