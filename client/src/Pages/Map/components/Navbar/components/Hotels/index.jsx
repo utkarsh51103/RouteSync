@@ -15,6 +15,7 @@ function index() {
   const dispatch = useDispatch();
   const [hotels, sethotels] = useState([]);
   const [selectedhotel, setselectedhotel] = useState({});
+  const [imageurl, setimageurl] = useState("");
 
   const placesSuggestions = async () => {
     try {
@@ -44,16 +45,7 @@ function index() {
     ].join(",");
 
     try {
-      const url4 = `https://api.foursquare.com/v3/places/search?
-ll=${latitude},${longitude}
-&query=hotel
-&limit=10`;
-
-      const url2 = `https://api.mapbox.com/geocoding/v5/mapbox.places/hotel.json?proximity=${longitude},${latitude}&access_token=pk.eyJ1IjoidXRrYXJzaDUxMSIsImEiOiJjbTYyM3d2b2gwcDhlMmtzZncwbjlsMHkwIn0.rf0wivdr5CRxcnrSpPmN6w`;
-
-      const url3 = `https://api.mapbox.com/geocoding/v5/mapbox.places/hotel.json?bbox=${bbox}&access_token=pk.eyJ1IjoidXRrYXJzaDUxMSIsImEiOiJjbTYyM3d2b2gwcDhlMmtzZncwbjlsMHkwIn0.rf0wivdr5CRxcnrSpPmN6w`;
-
-      const url1 = `https://api.mapbox.com/geocoding/v5/mapbox.places/hotel.json?types=poi&proximity=${longitude},${latitude}&access_token=pk.eyJ1IjoidXRrYXJzaDUxMSIsImEiOiJjbTYyM3d2b2gwcDhlMmtzZncwbjlsMHkwIn0.rf0wivdr5CRxcnrSpPmN6w`;
+      const url4 = `https://api.foursquare.com/v3/places/search?ll=${latitude},${longitude}&query=hotel&limit=10`;
 
       const response = await fetch(url4, {
         method: "GET",
@@ -81,11 +73,39 @@ ll=${latitude},${longitude}
     sethotels([]);
     setselectedhotel(hotel);
     console.log(hotel);
+    getHotelImages(hotel.fsq_id);
   };
+
+  const getHotelImages = async (fsq_id) => {
+    const url = `https://api.foursquare.com/v3/places/${fsq_id}/photos`;
+
+    const response = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Accept": "application/json",
+            "Authorization": "fsq3sZVAgQrTKyRNsG3/BI4fVByOrbF1eWdmmv6fEijCjH4="
+        }
+    });
+
+    const data = await response.json();
+    if (data.length > 0) {
+        const imageUrl = data[0].prefix + "original" + data[0].suffix;
+        setimageurl(imageUrl);
+    } else {
+        console.log("No images found for this hotel.");
+    }
+};
 
   useEffect(() => {
     console.log("Updated selected hotel:", selectedhotel);
   }, [selectedhotel]);
+
+  useEffect(()=>{
+     if(hotelSearch.length<3){
+       sethotels([])
+       setplaces([])
+     }
+  },[hotelSearch])
 
   return (
     <div className="flex flex-col gap-5 items-center justify-start">
@@ -156,8 +176,9 @@ ll=${latitude},${longitude}
       {Object.keys(selectedhotel).length > 0 && (
         <div className="flex rounded-lg w-full flex-col gap-5 items-center justify-center">
           <div className="flex flex-col gap-2 items-center justify-center w-[90%] bg-white rounded-lg p-3">
-            <div className="flex items-center font-semibold text-red-400 justify-center">
-              {selectedhotel.name}
+            <div className="flex w-full gap-5 items-center font-semibold text-red-400 justify-between">
+            <div><img src={imageurl.length>0 ? imageurl : "https://www.google.com/url?sa=i&url=https%3A%2F%2Ffreedesignfile.com%2F613263-hotel-cartoon-vector%2F&psig=AOvVaw3Hot55G1UWnEvGhqt4P-uC&ust=1739247681048000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNC5wNSguIsDFQAAAAAdAAAAABAE"} className="h-[100px] w-[150px]"/></div>
+            <div>{selectedhotel.name}</div>  
             </div>
             <div className="flex items-center gap-3 text-black justify-start">
               <span className="font-bold">
