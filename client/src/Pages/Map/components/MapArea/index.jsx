@@ -108,9 +108,9 @@ function MapArea() {
               map.fitBounds(bounds, { padding: [50, 50] });
         map.fitBounds(bounds,{padding:[50,50]});
         try {
-            const res = await axios.post(`${HOST}/route/get-danger`,{routeCords:routeCoordinates})
-           setdangerousplaces(res.data.data);
-           console.log(res.data.data)
+            const response = await axios.post(`${HOST}/route/get-danger`,{routeCords:routeCoordinates})
+            setdangerousplaces(response.data.data);
+            console.log(response)
       } catch (error) {
           console.log(error.message)
       }
