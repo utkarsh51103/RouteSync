@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import L from "leaflet";
+import L, { icon } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-routing-machine"
 import { useSelector } from "react-redux";
@@ -22,6 +22,15 @@ function MapArea() {
   const fromLongitude = useSelector((state) => state.fromLocation.longitude);
   const fromLatitude = useSelector((state) => state.fromLocation.latitude);
   const routenumber = useSelector((state)=>state.routenumber.number);
+
+  const markerIcon = new L.Icon({
+    iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png", 
+    iconSize: [25, 41],  
+    iconAnchor: [12, 41], 
+    popupAnchor: [1, -34], 
+    shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png", 
+    shadowSize: [41, 41]
+});
 
 
   useEffect(() => {
@@ -65,11 +74,11 @@ function MapArea() {
     addtileLayer();
 
     if(fromLatitude != 0 || fromLongitude != 0){
-    L.marker([fromLatitude, fromLongitude]).addTo(map).bindPopup(`<h6>From</h6>`);
+    L.marker([fromLatitude, fromLongitude],{icon:markerIcon}).addTo(map).bindPopup(`<h6>From</h6>`);
     map.setView([fromLatitude, fromLongitude], 13);
     }
     if(tolatitude != 0 || tolongitude != 0){
-         L.marker([tolatitude, tolongitude]).addTo(mapInstance.current).bindPopup(`<h6>To</h6>`);;
+         L.marker([tolatitude, tolongitude],{icon:markerIcon}).addTo(mapInstance.current).bindPopup(`<h6>To</h6>`);;
          mapInstance.current.setView([tolatitude, tolongitude], 14)
     }
 
