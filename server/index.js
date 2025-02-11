@@ -9,11 +9,14 @@ app.use(express.json())
 dotenv.config();
 
 app.use(cors({
-    origin: process.env.CLIENT_URL,
+    origin: 'https://route-sync.vercel.app',
     credentials: true,
 }));
 
 app.use('/route',dangerChannel)
+app.get('/',(req,res)=>{
+    res.send('Server is running')
+})
 
 connectdb();
 
