@@ -170,8 +170,9 @@ function MapArea() {
   }, [dangerousplaces]);
 
   return (
-    <div className="h-[100vh] w-[100vw] z-10" ref={mapRef}>
-    </div>
+    <>
+    <div className="h-[100vh] w-[100vw] z-10" ref={mapRef}></div>
+    </>
   );
 }
 
