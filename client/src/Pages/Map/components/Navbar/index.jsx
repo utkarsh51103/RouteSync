@@ -49,7 +49,7 @@ const LocationDialog = () =>{
     <div>
     
     {
-      searchdialog && <div className="absolute h-[400px] w-[400px] top-32 sm:left-24 md:left-36 flex justify-center z-20 bg-black/90 rounded-2xl transition-all duration-300">
+      searchdialog && <div className="absolute h-[500px] md:h-[630px] w-[500px] top-10 sm:left-2 md:left-36 flex justify-center z-20 bg-black/90 rounded-2xl transition-all duration-300">
       <Search/>
       <IoMdClose className="absolute text-white top-3 right-3 text-3xl cursor-pointer" onClick={()=>closedialog()}/>
       </div>

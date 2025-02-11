@@ -139,7 +139,7 @@ function index() {
             </div>
           </div>
         ) : null}
-        <div className="flex flex-col gap-5 overflow-y-scroll max-h-[250px]">
+        <div className="flex flex-col gap-5 overflow-y-scroll max-h-[450px]">
           {Fromsuggestions &&
             Fromsuggestions.map((suggested, index) => (
               <div
@@ -176,7 +176,7 @@ function index() {
             />
           </div>
         ) : null}
-        <div className="flex flex-col gap-5 overflow-y-scroll max-h-[250px]">
+        <div className="flex flex-col gap-5 overflow-y-scroll max-h-[450px]">
           {Tosuggestions &&
             Tosuggestions.map((suggested, index) => (
               <div
