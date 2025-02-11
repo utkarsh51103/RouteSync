@@ -21,6 +21,8 @@ function MapArea() {
   const fromLongitude = useSelector((state) => state.fromLocation.longitude);
   const fromLatitude = useSelector((state) => state.fromLocation.latitude);
   const routenumber = useSelector((state) => state.routenumber.number);
+  const [danger,setdanger] = useState(false);
+
 
   const markerIcon = new L.Icon({
     iconUrl:
