@@ -10,7 +10,7 @@ import Restaurant from './components/Restaurants'
 
 function index() {
 
-  const [searchdialog,setsearchdialog] = useState(false);
+  const [searchdialog,setsearchdialog] = useState(true);
   const [hoteldialog,sethoteldialog] = useState(false);
   const [fooddialog,setfooddialog] = useState(false);
 
