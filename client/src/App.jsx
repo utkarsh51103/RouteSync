@@ -6,10 +6,12 @@ import {Toaster } from "react-hot-toast"
 import axios from "axios";
 function App() {
 
+  const HOST = import.meta.env.VITE_SERVER_URL;
+
    const servercheck = async () =>{
     try {
-      const res = await axios.get('https://routesync-server.onrender.com/');
-      console.log(res)
+      const res = await axios.get(`${HOST}/`);
+      console.log(res.data)
     } catch (error) {
       console.log(error.message)
     }

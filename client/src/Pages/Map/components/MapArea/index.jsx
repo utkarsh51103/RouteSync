@@ -13,6 +13,8 @@ function MapArea() {
   const routingRef = useRef(null);
   const [zoom,setzoom] = useState(3);
   const [dangerousplaces,setdangerousplaces] = useState([])
+  const HOST = import.meta.env.VITE_SERVER_URL;
+
   
   const viewtype = useSelector((state) => state.viewType.view);
   const tolongitude = useSelector((state) => state.ToLocation.longitude);
@@ -96,7 +98,7 @@ function MapArea() {
               map.fitBounds(bounds, { padding: [50, 50] });
         map.fitBounds(bounds,{padding:[50,50]});
         try {
-            const res = await axios.post(`https://routesync-server.onrender.com/route/get-danger`,{routeCords:routeCoordinates})
+            const res = await axios.post(`${HOST}/route/get-danger`,{routeCords:routeCoordinates})
            setdangerousplaces(res.data.data);
            console.log(res.data.data)
       } catch (error) {
