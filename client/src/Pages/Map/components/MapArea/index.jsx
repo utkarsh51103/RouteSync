@@ -169,11 +169,6 @@ function MapArea() {
 
   return (
     <div className="h-[100vh] w-[100vw] z-10" ref={mapRef}>
-      {loading && (
-        <div className="absolute top-0 left-[50vh] text-2xl bg-black/50 h-[50px] px-3 py-2 text-white">
-          Loading Danger Locations...
-        </div>
-      )}
     </div>
   );
 }
