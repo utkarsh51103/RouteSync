@@ -34,7 +34,6 @@ function Index() {
       const data = await response.json();
       const suggestion = data.features;
       settosuggestions(suggestion);
-      console.log(tosuggestions);
     } catch (error) {
       console.log(error.message);
     }
@@ -51,7 +50,6 @@ function Index() {
       const data = await response.json();
       const suggestion = data.features;
       setfromsuggestions(suggestion);
-      console.log(fromsuggestions);
     } catch (error) {
       console.log(error.message);
     }
