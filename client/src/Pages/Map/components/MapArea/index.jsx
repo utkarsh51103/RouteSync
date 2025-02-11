@@ -1,38 +1,37 @@
 import React, { useEffect, useRef, useState } from "react";
 import L, { icon } from "leaflet";
 import "leaflet/dist/leaflet.css";
-import "leaflet-routing-machine"
+import "leaflet-routing-machine";
 import { useSelector } from "react-redux";
 
-import axios from "axios"
+import axios from "axios";
 
 function MapArea() {
   const mapRef = useRef(null);
   const tileRef = useRef(null);
   const mapInstance = useRef(null);
   const routingRef = useRef(null);
-  const [zoom,setzoom] = useState(3);
-  const [dangerousplaces,setdangerousplaces] = useState([])
+  const [zoom, setzoom] = useState(3);
+  const [dangerousplaces, setdangerousplaces] = useState([]);
   const HOST = import.meta.env.VITE_SERVER_URL;
 
-  
   const viewtype = useSelector((state) => state.viewType.view);
   const tolongitude = useSelector((state) => state.ToLocation.longitude);
   const tolatitude = useSelector((state) => state.ToLocation.latitude);
   const fromLongitude = useSelector((state) => state.fromLocation.longitude);
   const fromLatitude = useSelector((state) => state.fromLocation.latitude);
-  const routenumber = useSelector((state)=>state.routenumber.number);
+  const routenumber = useSelector((state) => state.routenumber.number);
 
   const markerIcon = new L.Icon({
-    iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
-    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+    iconUrl:
+      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+    shadowUrl:
+      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
     shadowSize: [41, 41],
-});
-
-
+  });
 
   useEffect(() => {
     const map = L.map(mapRef.current).setView(
@@ -74,77 +73,109 @@ function MapArea() {
 
     addtileLayer();
 
-    if(fromLatitude != 0 || fromLongitude != 0){
-    L.marker([fromLatitude, fromLongitude],{icon:markerIcon}).addTo(map).bindPopup(`<h6>From</h6>`);
-    map.setView([fromLatitude, fromLongitude], 13);
+    if (fromLatitude != 0 || fromLongitude != 0) {
+      L.marker([fromLatitude, fromLongitude], { icon: markerIcon })
+        .addTo(map)
+        .bindPopup(`<h6>From</h6>`);
+      map.setView([fromLatitude, fromLongitude], 13);
     }
-    if(tolatitude != 0 || tolongitude != 0){
-         L.marker([tolatitude, tolongitude],{icon:markerIcon}).addTo(mapInstance.current).bindPopup(`<h6>To</h6>`);;
-         mapInstance.current.setView([tolatitude, tolongitude], 14)
+    if (tolatitude != 0 || tolongitude != 0) {
+      L.marker([tolatitude, tolongitude], { icon: markerIcon })
+        .addTo(mapInstance.current)
+        .bindPopup(`<h6>To</h6>`);
+      mapInstance.current.setView([tolatitude, tolongitude], 14);
     }
 
-    if(routingRef.current){
-        map.removeControl(routingRef.current);
+    if (routingRef.current) {
+      map.removeControl(routingRef.current);
     }
 
-    if((fromLatitude != 0 || fromLongitude != 0) && (tolatitude != 0 || tolongitude != 0)){
-    routingRef.current = L.Routing.control({
-        waypoints:[
-            L.latLng(fromLatitude,fromLongitude),
-                L.latLng(tolatitude,tolongitude),
+    if (
+      (fromLatitude != 0 || fromLongitude != 0) &&
+      (tolatitude != 0 || tolongitude != 0)
+    ) {
+      routingRef.current = L.Routing.control({
+        waypoints: [
+          L.latLng(fromLatitude, fromLongitude),
+          L.latLng(tolatitude, tolongitude),
         ],
-        routeWhileDragging:true,
-        show:false
-    })
-    .on('routesfound',async(e)=>{
-        const routes = e.routes;
-        if(routes.length>0){
+        routeWhileDragging: true,
+        show: false,
+      })
+        .on("routesfound", async (e) => {
+          const routes = e.routes;
+          if (routes.length > 0) {
             const bounds = L.latLngBounds();
-            const routeCoordinates = routes[routenumber].coordinates.map((coord) => ({
+            const routeCoordinates = routes[routenumber].coordinates.map(
+              (coord) => ({
                 lat: coord.lat,
                 lng: coord.lng,
-              }));
-              routeCoordinates.forEach((coord) => bounds.extend(coord));
-              map.fitBounds(bounds, { padding: [50, 50] });
-        map.fitBounds(bounds,{padding:[50,50]});
-        try {
-            const response = await axios.post(`${HOST}/route/get-danger`,{routeCords:routeCoordinates})
-            setdangerousplaces(response.data.data);
-            console.log(response)
-      } catch (error) {
-          console.log(error.message)
-      }
-        }
-    })
-    .addTo(map);
-}else{
-    setzoom(2);
-}
+              })
+            );
+            routeCoordinates.forEach((coord) => bounds.extend(coord));
+            map.fitBounds(bounds, { padding: [50, 50] });
+            map.fitBounds(bounds, { padding: [50, 50] });
+            try {
+              const response = await axios.post(`${HOST}/route/get-danger`, {
+                routeCords: routeCoordinates,
+              });
+              setdangerousplaces(response.data.data);
+              console.log(response);
+            } catch (error) {
+              console.log(error.message);
+            }
+          }
+        })
+        .addTo(map);
+    } else {
+      setzoom(2);
+    }
 
     const directionsContainer = document.querySelector(
-        ".leaflet-routing-container"
-      );
-      if (directionsContainer) {
-        directionsContainer.style.display = "none";
-      }
-       
+      ".leaflet-routing-container"
+    );
+    if (directionsContainer) {
+      directionsContainer.style.display = "none";
+    }
 
     return () => {
       map.remove();
     };
-  }, [viewtype, fromLatitude, fromLatitude, tolatitude, tolongitude, routenumber]);
-   useEffect(()=>{
-  if(dangerousplaces.length > 0 &&  mapInstance.current){
- dangerousplaces.forEach((danger,index) => {
-   L.marker([danger.Latitude, danger.Longitude], { icon: L.icon({ iconUrl: "https://maps.google.com/mapfiles/kml/shapes/caution.png", iconSize: [15,15], iconAnchor: [12, 30] }) })
-     .addTo(mapInstance.current)
-     .bindPopup(`<b>Crime:</b> ${danger.FrequentCrime} <br/><b>Location:</b> ${danger.LocationName}`);
- });
-   }
-},[dangerousplaces])
-  
+  }, [
+    viewtype,
+    fromLatitude,
+    fromLatitude,
+    tolatitude,
+    tolongitude,
+    routenumber,
+  ]);
+  useEffect(() => {
+    if (dangerousplaces.length > 0 && mapInstance.current) {
+      dangerousplaces.forEach((danger, index) => {
+        L.marker([danger.Latitude, danger.Longitude], {
+          icon: L.icon({
+            iconUrl: "https://maps.google.com/mapfiles/kml/shapes/caution.png",
+            iconSize: [15, 15],
+            iconAnchor: [12, 30],
+          }),
+        })
+          .addTo(mapInstance.current)
+          .bindPopup(
+            `<b>Crime:</b> ${danger.FrequentCrime} <br/><b>Location:</b> ${danger.LocationName}`
+          );
+      });
+    }
+  }, [dangerousplaces]);
 
-  return <div className="h-[100vh] w-[100vw] z-10" ref={mapRef}></div>;
+  return (
+    <div className="h-[100vh] w-[100vw] z-10" ref={mapRef}>
+      {loading && (
+        <div className="absolute top-0 left-[50vh] text-2xl bg-black/50 h-[50px] px-3 py-2 text-white">
+          Loading Danger Locations...
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default MapArea;
