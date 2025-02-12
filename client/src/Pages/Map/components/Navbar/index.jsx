@@ -49,27 +49,27 @@ const LocationDialog = () =>{
     <div>
     
     {
-      searchdialog && <div className="absolute h-[500px] md:h-[630px] w-[500px] top-10 sm:left-2 md:left-36 flex justify-center z-20 bg-black/90 rounded-2xl transition-all duration-300">
+      searchdialog && <div className="absolute h-[500px] md:h-[630px] w-[350px]  md:w-[500px] top-32 md:top-10 sm:left-2 md:left-36 flex justify-center z-20 bg-black/90 rounded-2xl transition-all duration-300">
       <Search/>
       <IoMdClose className="absolute text-white top-3 right-3 text-3xl cursor-pointer" onClick={()=>closedialog()}/>
       </div>
     }
     {
-      hoteldialog && <div className="absolute h-[500px] md:h-[630px] w-[500px] top-10 sm:left-2 md:left-36 flex justify-center z-20 bg-black/90 rounded-2xl transition-all duration-300">
+      hoteldialog && <div className="absolute h-[500px] md:h-[630px] w-[350px]  md:w-[500px] top-32 md:top-10 sm:left-2 md:left-36 flex justify-center z-20 bg-black/90 rounded-2xl transition-all duration-300">
       <Hotel/>
       <IoMdClose className="absolute text-white top-3 right-3 text-3xl cursor-pointer" onClick={()=>closedialog()}/>
       </div>
     }
 
     {
-      fooddialog && <div className="absolute h-[500px] md:h-[630px] w-[500px] top-10 sm:left-2 md:left-36 flex justify-center z-20 bg-black/90 rounded-2xl transition-all duration-300">
+      fooddialog && <div className="absolute h-[500px] md:h-[630px] w-[350px]  md:w-[500px] top-32 md:top-10 sm:left-2 md:left-36 flex justify-center z-20 bg-black/90 rounded-2xl transition-all duration-300">
       <Restaurant/>
       <IoMdClose className="absolute text-white top-3 right-3 text-3xl cursor-pointer" onClick={()=>closedialog()}/>
       </div>
     }
     
       <div className="absolute flex sm:flex-row items-center justify-center sm:bottom-0 md:top-0 md:left-0 md:h-[50vh] md:w-[10vw] lg:w-[8vw] xl:w-[6vw] sm:w-[100vw] sm:h-[15vh] md:mt-36 bg-black/60 backdrop-blur-sm z-20 rounded-lg">
-        <div className="flex md:flex-col sm:flex-row items-center justify-around md:gap-10 sm:gap-20 sm:ml-10 md:ml-0 text-white">
+        <div className="flex md:flex-col sm:flex-row items-center justify-around md:gap-10 sm:gap-12 sm:ml-10 md:ml-0 text-white">
           <div className="text-md font-bold flex items-center flex-col text-orange-500 cursor-pointer"
           onClick={() => LocationDialog()}
           >

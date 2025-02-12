@@ -152,7 +152,7 @@ function Index() {
             Explore the Safest Routes
           </motion.div>
         </div>
-        <div className="absolute top-[5%] md:right-[20%] lg:right-[30%] xl:right-[20%] sm:right-[10%] flex flex-col justify-center sm:justify-center h-[600px] w-[400px] bg-black/65 rounded-xl">
+        <div className="absolute md:top-[5%] md:right-[20%] lg:right-[30%] xl:right-[20%] sm:right-[5%] flex flex-col justify-center sm:justify-center sm:w-[350px] h-[600px] w-[400px] bg-black/65 rounded-xl">
           { (tosuggestions.length == 0 && fromsuggestions == 0) && <div className="text-gray-500 xl:hidden absolute top-0 bottom-0 ml-4">
             <span className="text-[60px] font-semibold text-orange-500">R</span>
             <span className="text-[60px] font-semibold">oute</span>
